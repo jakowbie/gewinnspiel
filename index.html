@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gewinnspiel Landing Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #emailForm {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Willkommen zu unserem Gewinnspiel!</h1>
+        <p>Bitte geben Sie Ihre Emailadresse ein, um am Gewinnspiel teilzunehmen:</p>
+
+        <form id="emailForm" action="https://formspree.io/f/mdorndzw" method="POST">
+            <input type="email" id="email" name="email" placeholder="Ihre Emailadresse" required>
+            <button type="submit">Teilnehmen</button>
+        </form>
+    </div>
+</body>
+</html>
