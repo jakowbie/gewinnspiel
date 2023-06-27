@@ -21,20 +21,61 @@
             color: #333;
         }
 
-        #emailForm {
+        #emailForm, #thankyouMessage {
             margin-top: 30px;
+            display: none;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Willkommen zu unserem Gewinnspiel!</h1>
-        <p>Bitte geben Sie Ihre Emailadresse ein, um am Gewinnspiel teilzunehmen:</p>
+        
+        <div id="accessForm">
+            <input type="text" id="accessCode" name="accessCode" placeholder="Zugangscode">
+            <button type="button" onclick="checkAccessCode()">Bestätigen</button>
+        </div>
 
         <form id="emailForm" action="https://formspree.io/f/mdorndzw" method="POST">
             <input type="email" id="email" name="email" placeholder="Ihre Emailadresse" required>
             <button type="submit">Teilnehmen</button>
         </form>
+
+        <div id="thankyouMessage">
+            <p>Vielen Dank für die Teilnahme!</p>
+        </div>
     </div>
+
+    <script>
+        function checkAccessCode() {
+            var accessCode = document.getElementById('accessCode').value;
+            if (accessCode == 'ma2023') {
+                document.getElementById('accessForm').style.display = 'none';
+                document.getElementById('emailForm').style.display = 'block';
+            }
+        }
+
+        document.getElementById('emailForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            this.style.display = 'none';
+            document.getElementById('thankyouMessage').style.display = 'block';
+            // Send form data to Formspree
+            fetch(this.action, {
+                method: 'POST',
+                body: new URLSearchParams(new FormData(this)),
+                headers: {
+                    'Accept': 'application/json'
+                },
+            }).then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Network response was not ok.');
+                }
+            }).catch(error => {
+                console.error('There was a problem with the fetch operation: ', error);
+            });
+        });
+    </script>
 </body>
 </html>
