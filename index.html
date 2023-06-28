@@ -1,100 +1,61 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-    <title>Willkommen beim Gewinnspiel!</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>Willkommen beim Gewinnspiel</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f0f0f0;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            text-align: center;
-        }
-
-        h1, p {
+            background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             color: #333;
         }
-
-        h1 {
-            margin-bottom: 20px;
-            font-size: 2em;
-        }
-
-        p {
-            margin-bottom: 40px;
-            line-height: 1.5;
-            color: #666;
-        }
-
-        input, button {
-            padding: 10px;
+        .container {
+            max-width: 600px;
             width: 100%;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
         }
-
-        button {
-            background-color: #333;
-            color: #fff;
-        }
-
-        #welcomeMessage, #accessCodeError, #emailForm, #thankyouMessage {
+        #emailForm, #thankyouMessage {
             display: none;
         }
-
-        #accessCodeError {
-            color: red;
-            margin-bottom: 20px;
-        }
-
         .legalNotes {
             font-size: 0.8em;
-            color: #999;
-            text-align: left;
         }
-
-        @media only screen and (max-width: 600px) {
-            .container {
-                padding: 10px;
-            }
-
-            h1 {
-                font-size: 1.5em;
-            }
+        input[type="email"], button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        button[type="submit"] {
+            background-color: #8fd3f4;
+            color: #fff;
+            border: none;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 id="welcomeMessage">Willkommen beim Gewinnspiel</h1>
-        <p id="welcomeText">Auf der letzten Seite der Online-Umfrage stand der Zugangscode für die Teilnahme am Gewinnspiel. Trage den Zugangscode ins Eingabefenster ein.<br><br>
-        Mit der Teilnahme bestätigst du, dass du den Fragebogen vollständig ausgefüllt hast.</p>
-        
-        <div id="accessForm">
-            <input type="text" id="accessCode" name="accessCode" placeholder="Zugangscode">
-            <button type="button" onclick="checkAccessCode()">Bestätigen</button>
-            <p id="accessCodeError">Der Zugangscode besteht aus zwei Kleinbuchstaben und vier Ziffern. Bitte versuche es erneut.</p>
-        </div>
-
+        <h1>Willkommen beim Gewinnspiel</h1>
         <form id="emailForm" action="https://formspree.io/f/mdorndzw" method="POST">
-            <h1>Willkommen beim Gewinnspiel</h1>
-            <p>Bitte trage hier die Emailadresse ein, mit der du bei einem möglichen Gewinn kontaktiert werden möchtest.<br><br>Viel Glück!</p>
-            <input type="email" id="email" name="email" placeholder="Ihre Emailadresse" required>
+            <p>Bitte trage hier die Emailadresse ein, mit der du bei einem möglichen Gewinn kontaktiert werden möchtest. Mit der Teilnahme bestätigst du, dass du den Online-Fragebogen vollständig ausgefüllt hast.<br><br> Viel Glück!</p>
+            <input type="email" id="email" name="_replyto" required placeholder="Ihre E-Mail Adresse" />
             <button type="submit">Teilnehmen</button>
             <p class="legalNotes">
                 Die Kontaktangabe dient lediglich zur Benachrichtigung im Falle Deines Gewinns. Darüber hinaus wird keine Kontaktaufnahme stattfinden. Aus allen Teilnehmenden wird automatisch und zufällig ein*e Gewinner*in gezogen. Der Autor des Fragebogens hat keinen Einfluss auf den Ausgang dieser Verlosung. Mehrfachteilnahmen werden zusammengefasst und erhöhen dementsprechend die Chance auf den Gewinn nicht. Nach Abschluss des Gewinnspiels werden alle Email-Adressen gelöscht.<br><br>
                 Bei Fragen zum Gewinnspiel oder den Umgang mit Deinen Daten melde dich bitte hier: pg96ipot@studserv.uni-leipzig.de
             </p>
         </form>
-
         <div id="thankyouMessage">
             <h1>Vielen Dank für Deine Teilnahme</h1>
             <p>Die Umfrage läuft bis zum 31.07.2023. Danach wird die Gewinnerin oder der Gewinner benachrichtigt.</p>
@@ -106,35 +67,11 @@
     </div>
 
     <script>
-        document.getElementById('accessForm').style.display = 'block';
-        document.getElementById('welcomeMessage').style.display = 'block';
-        document.getElementById('welcomeText').style.display = 'block';
-
-        function checkAccessCode() {
-            var accessCode = document.getElementById('accessCode').value;
-            var accessCodeError = document.getElementById('accessCodeError');
-            if (accessCode == 'ma2023') {
-                document.getElementById('accessForm').style.display = 'none';
-                document.getElementById('welcomeMessage').style.display = 'none';
-                document.getElementById('welcomeText').style.display = 'none';
-                document.getElementById('emailForm').style.display = 'block';
-            } else {
-                accessCodeError.style.display = 'block';
-            }
-        }
-
+        document.getElementById('emailForm').style.display = "block";
         document.getElementById('emailForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            this.style.display = 'none';
-            document.getElementById('thankyouMessage').style.display = 'block';
-            // Send form data to Formspree
-            fetch(this.action, {
-                method: 'POST',
-                body: new URLSearchParams(new FormData(this)),
-                headers: {
-                    'Accept': 'application/json'
-                },
-            });
+            document.getElementById('emailForm').style.display = "none";
+            document.getElementById('thankyouMessage').style.display = "block";
         });
     </script>
 </body>
