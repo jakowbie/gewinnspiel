@@ -42,13 +42,19 @@
             border: none;
             cursor: pointer;
         }
+        img {
+            width: 100px; /* Hier kannst du die Größe des Bildes anpassen */
+            display: block;
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <img src="https://jakowbie.github.io/gewinnspiel/2560px-Universität_Leipzig_logo.svg.png" alt="Universität Leipzig">
         <h1>Willkommen beim Gewinnspiel</h1>
         <form id="emailForm" action="https://formspree.io/f/mdorndzw" method="POST">
-            <p>Bitte trage hier die Emailadresse ein, mit der du bei einem möglichen Gewinn kontaktiert werden möchtest. Mit der Teilnahme bestätigst du, dass du den Online-Fragebogen vollständig ausgefüllt hast.<br><br> Viel Glück!</p>
+            <p>Bitte trage hier die Emailadresse ein, mit der du bei einem möglichen Gewinn kontaktiert werden möchtest.<br><br><br><br>Mit der Teilnahme bestätigst du, dass du den Online-Fragebogen vollständig ausgefüllt hast.<br><br> Viel Glück!</p>
             <input type="email" id="email" name="_replyto" required placeholder="Ihre E-Mail Adresse" />
             <button type="submit">Teilnehmen</button>
             <p class="legalNotes">
