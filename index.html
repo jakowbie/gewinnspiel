@@ -2,76 +2,64 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Willkommen beim Gewinnspiel</title>
     <style>
         body {
+            background: linear-gradient(to right, #d3d3d3, #a9a9a9);
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             color: #333;
         }
         .container {
-            max-width: 600px;
-            width: 100%;
-            padding: 30px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
         }
-        #emailForm, #thankyouMessage {
+        img {
+            display: block;
+            margin: 0 auto;
+            width: 100px;
+        }
+        .hide {
             display: none;
-        }
-        .legalNotes {
-            font-size: 0.8em;
-        }
-        input[type="email"], button[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-        }
-        button[type="submit"] {
-            background-color: #8fd3f4;
-            color: #fff;
-            border: none;
-            cursor: pointer;
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <img src="2560px-Universität_Leipzig_logo.svg.png" alt="Logo der Universität Leipzig">
         <h1>Willkommen beim Gewinnspiel</h1>
-        <form id="emailForm" action="https://formspree.io/f/mdorndzw" method="POST">
-            <p>Bitte trage hier die Emailadresse ein, mit der du bei einem möglichen Gewinn kontaktiert werden möchtest. Mit der Teilnahme bestätigst du, dass du den Online-Fragebogen vollständig ausgefüllt hast.<br><br> Viel Glück!</p>
-            <input type="email" id="email" name="_replyto" required placeholder="Ihre E-Mail Adresse" />
-            <button type="submit">Teilnehmen</button>
-            <p class="legalNotes">
+        <div id="emailForm">
+            <p>
+                Bitte trage hier die Emailadresse ein, mit der du bei einem möglichen Gewinn kontaktiert werden möchtest.<br><br>
+                Mit der Teilnahme bestätigst du, dass du den Online-Fragebogen vollständig ausgefüllt hast.
+            </p>
+            <form action="https://formspree.io/f/mdorndzw" method="POST">
+                <input type="email" name="_replyto" required>
+                <input type="submit" value="Teilnehmen">
+            </form>
+            <p>
                 Die Kontaktangabe dient lediglich zur Benachrichtigung im Falle Deines Gewinns. Darüber hinaus wird keine Kontaktaufnahme stattfinden. Aus allen Teilnehmenden wird automatisch und zufällig ein*e Gewinner*in gezogen. Der Autor des Fragebogens hat keinen Einfluss auf den Ausgang dieser Verlosung. Mehrfachteilnahmen werden zusammengefasst und erhöhen dementsprechend die Chance auf den Gewinn nicht. Nach Abschluss des Gewinnspiels werden alle Email-Adressen gelöscht.<br><br>
                 Bei Fragen zum Gewinnspiel oder den Umgang mit Deinen Daten melde dich bitte hier: pg96ipot@studserv.uni-leipzig.de
             </p>
-        </form>
-        <div id="thankyouMessage">
+        </div>
+        <div id="thankyouMessage" class="hide">
             <h1>Vielen Dank für Deine Teilnahme</h1>
-            <p>Die Umfrage läuft bis zum 31.07.2023. Danach wird die Gewinnerin oder der Gewinner benachrichtigt.</p>
-            <p class="legalNotes">
+            <p>
+                Die Umfrage läuft bis zum 31.07.2023. Danach wird die Gewinnerin oder der Gewinner benachrichtigt.
+            </p>
+            <p>
                 Die Kontaktangabe dient lediglich zur Benachrichtigung im Falle Deines Gewinns. Darüber hinaus wird keine Kontaktaufnahme stattfinden. Aus allen Teilnehmenden wird automatisch und zufällig ein*e Gewinner*in gezogen. Der Autor des Fragebogens hat keinen Einfluss auf den Ausgang dieser Verlosung. Mehrfachteilnahmen werden zusammengefasst und erhöhen dementsprechend die Chance auf den Gewinn nicht. Nach Abschluss des Gewinnspiels werden alle Email-Adressen gelöscht.<br><br>
                 Bei Fragen zum Gewinnspiel oder den Umgang mit Deinen Daten melde dich bitte hier: pg96ipot@studserv.uni-leipzig.de
             </p>
         </div>
     </div>
-
     <script>
-        document.getElementById('emailForm').style.display = "block";
-        document.getElementById('emailForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            document.getElementById('emailForm').style.display = "none";
-            document.getElementById('thankyouMessage').style.display = "block";
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            document.getElementById('emailForm').classList.add('hide');
+            document.getElementById('thankyouMessage').classList.remove('hide');
         });
     </script>
 </body>
