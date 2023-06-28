@@ -6,19 +6,33 @@
     <title>Willkommen beim Gewinnspiel</title>
     <style>
         body {
-            background: linear-gradient(to right, #d3d3d3, #a9a9a9);
+            background: linear-gradient(to right, #f0f0f0, #dcdcdc);
             font-family: Arial, sans-serif;
             color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
         }
         .container {
-            max-width: 800px;
-            margin: 0 auto;
+            background: #fff;
             padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h1 {
+            margin-top: 0;
         }
         img {
             display: block;
-            margin: 0 auto;
+            margin: 0 auto 20px;
             width: 100px;
+        }
+        small {
+            font-size: 0.8em;
         }
         .hide {
             display: none;
@@ -30,27 +44,18 @@
         <img src="2560px-Universität_Leipzig_logo.svg.png" alt="Logo der Universität Leipzig">
         <h1>Willkommen beim Gewinnspiel</h1>
         <div id="emailForm">
-            <p>
-                Bitte trage hier die Emailadresse ein, mit der du bei einem möglichen Gewinn kontaktiert werden möchtest.<br><br>
-                Mit der Teilnahme bestätigst du, dass du den Online-Fragebogen vollständig ausgefüllt hast.
-            </p>
+            <p>Bitte trage hier die Emailadresse ein, mit der du bei einem möglichen Gewinn kontaktiert werden möchtest.<br><br> Mit der Teilnahme bestätigst du, dass du den Online-Fragebogen vollständig ausgefüllt hast.</p>
             <form action="https://formspree.io/f/mdorndzw" method="POST">
                 <input type="email" name="_replyto" required>
                 <input type="submit" value="Teilnehmen">
             </form>
-            <p>
-                Die Kontaktangabe dient lediglich zur Benachrichtigung im Falle Deines Gewinns. Darüber hinaus wird keine Kontaktaufnahme stattfinden. Aus allen Teilnehmenden wird automatisch und zufällig ein*e Gewinner*in gezogen. Der Autor des Fragebogens hat keinen Einfluss auf den Ausgang dieser Verlosung. Mehrfachteilnahmen werden zusammengefasst und erhöhen dementsprechend die Chance auf den Gewinn nicht. Nach Abschluss des Gewinnspiels werden alle Email-Adressen gelöscht.<br><br>
-                Bei Fragen zum Gewinnspiel oder den Umgang mit Deinen Daten melde dich bitte hier: pg96ipot@studserv.uni-leipzig.de
-            </p>
+            <small>Die Kontaktangabe dient lediglich zur Benachrichtigung im Falle Deines Gewinns. Darüber hinaus wird keine Kontaktaufnahme stattfinden. Aus allen Teilnehmenden wird automatisch und zufällig ein*e Gewinner*in gezogen. Der Autor des Fragebogens hat keinen Einfluss auf den Ausgang dieser Verlosung. Mehrfachteilnahmen werden zusammengefasst und erhöhen dementsprechend die Chance auf den Gewinn nicht. Nach Abschluss des Gewinnspiels werden alle Email-Adressen gelöscht.<br><br> Bei Fragen zum Gewinnspiel oder den Umgang mit Deinen Daten melde dich bitte hier: pg96ipot@studserv.uni-leipzig.de</small>
         </div>
         <div id="thankyouMessage" class="hide">
             <h1>Vielen Dank für Deine Teilnahme</h1>
-            <p>
-                Die Umfrage läuft bis zum 31.07.2023. Danach wird die Gewinnerin oder der Gewinner benachrichtigt.
-            </p>
-            <p>
-                Die Kontaktangabe dient lediglich zur Benachrichtigung im Falle Deines Gewinns. Darüber hinaus wird keine Kontaktaufnahme stattfinden. Aus allen Teilnehmenden wird automatisch und zufällig ein*e Gewinner*in gezogen. Der Autor des Fragebogens hat keinen Einfluss auf den Ausgang dieser Verlosung. Mehrfachteilnahmen werden zusammengefasst und erhöhen dementsprechend die Chance auf den Gewinn nicht. Nach Abschluss des Gewinnspiels werden alle Email-Adressen gelöscht.<br><br>
-                Bei Fragen zum Gewinnspiel oder den Umgang mit Deinen Daten melde dich bitte hier: pg96ipot@studserv.uni-leipzig.de
+            <p>Die Umfrage läuft bis zum 31.07.2023. Danach wird die Gewinnerin oder der Gewinner benachrichtigt.</p>
+            <p class="small">
+                Die Kontaktangabe dient lediglich zur Benachrichtigung im Falle Deines Gewinns. Darüber hinaus wird keine Kontaktaufnahme stattfinden. Aus allen Teilnehmenden wird automatisch und zufällig ein*e Gewinner*in gezogen. Der Autor des Fragebogens hat keinen Einfluss auf den Ausgang dieser Verlosung. Mehrfachteilnahmen werden zusammengefasst und erhöhen dementsprechend die Chance auf den Gewinn nicht. Nach Abschluss des Gewinnspiels werden alle Email-Adressen gelöscht.<br><br> Bei Fragen zum Gewinnspiel oder den Umgang mit Deinen Daten melde dich bitte hier: pg96ipot@studserv.uni-leipzig.de
             </p>
         </div>
     </div>
