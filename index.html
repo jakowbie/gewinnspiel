@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Gewinnspiel Landing Page</title>
+    <title>Willkommen beim Gewinnspiel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -17,28 +18,79 @@
             text-align: center;
         }
 
-        h1 {
+        h1, p {
             color: #333;
         }
 
-        #emailForm, #thankyouMessage {
-            margin-top: 30px;
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        p {
+            margin-bottom: 40px;
+            line-height: 1.5;
+            color: #666;
+        }
+
+        input, button {
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+        }
+
+        #accessCodeError, #emailForm, #thankyouMessage {
             display: none;
+        }
+
+        #accessCodeError {
+            color: red;
+            margin-bottom: 20px;
+        }
+
+        .legalNotes {
+            font-size: 0.8em;
+            color: #999;
+            text-align: left;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Willkommen zu unserem Gewinnspiel!</h1>
+        <h1>Willkommen beim Gewinnspiel</h1>
+        <p>Auf der letzten Seite der Online-Umfrage stand der Zugangscode für die Teilnahme am Gewinnspiel. Trage den Zugangscode ins Eingabefenster ein.<br><br>
+        Mit der Teilnahme bestätigst du, dass du den Fragebogen vollständig ausgefüllt hast.</p>
         
         <div id="accessForm">
             <input type="text" id="accessCode" name="accessCode" placeholder="Zugangscode">
             <button type="button" onclick="checkAccessCode()">Bestätigen</button>
+            <p id="accessCodeError">Der Zugangscode besteht aus zwei Kleinbuchstaben und vier Ziffern. Bitte versuche es erneut.</p>
         </div>
 
         <form id="emailForm" action="https://formspree.io/f/mdorndzw" method="POST">
+            <p>Bitte trage hier die Emailadresse ein, mit der du bei einem möglichen Gewinn kontaktiert werden möchtest.</p>
             <input type="email" id="email" name="email" placeholder="Ihre Emailadresse" required>
             <button type="submit">Teilnehmen</button>
+            <p class="legalNotes">
+                Die Kontaktangabe dient lediglich zur Benachrichtigung im Falle Deines Gewinns. Darüber hinaus wird keine Kontaktaufnahme stattfinden. Aus allen Teilnehmenden wird automatisch und zufällig ein*e Gewinner*in gezogen. Der Autor des Fragebogens hat keinen Einfluss auf den Ausgang dieser Verlosung. Mehrfachteilnahmen werden zusammengefasst und erhöhen dementsprechend die Chance auf den Gewinn nicht. Nach Abschluss des Gewinnspiels werden alle Email-Adressen gelöscht.
+            </p>
         </form>
 
         <div id="thankyouMessage">
@@ -49,9 +101,12 @@
     <script>
         function checkAccessCode() {
             var accessCode = document.getElementById('accessCode').value;
+            var accessCodeError = document.getElementById('accessCodeError');
             if (accessCode == 'ma2023') {
                 document.getElementById('accessForm').style.display = 'none';
                 document.getElementById('emailForm').style.display = 'block';
+            } else {
+                accessCodeError.style.display = 'block';
             }
         }
 
@@ -66,14 +121,6 @@
                 headers: {
                     'Accept': 'application/json'
                 },
-            }).then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('Network response was not ok.');
-                }
-            }).catch(error => {
-                console.error('There was a problem with the fetch operation: ', error);
             });
         });
     </script>
