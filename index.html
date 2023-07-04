@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Willkommen beim Gewinnspiel!</title>
+    <title> </title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -67,13 +67,13 @@
     <div class="container">
         <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Universität_Leipzig_logo.svg" alt="Universität Leipzig">
         <div id="welcomeMessage">
-            <h1>Willkommen beim Gewinnspiel!</h1>
+            <h1> </h1>
         </div>
         <div id="codeForm">
-            <h2>Code eingeben</h2>
+            <h2>Willkommen beim Gewinnspiel"</h2>
             <form onsubmit="handleCodeSubmission(); return false;">
                 <p>Bitte trage hier eine vierstellige Zahl zwischen 0000 und 9999 ein:</p>
-                <input type="number" id="codeInput" name="codeInput" min="0" max="9999" required placeholder="Dein Code" />
+                <input type="number" id="codeInput" name="codeInput" min="0" max="9999" required placeholder="Deine Losnummer" />
                 <button type="submit">Weiter</button>
                 <p class="legalNotes">
                     Du gewinnst, wenn deine Nummer mit den ersten vier Ziffern der öffentlich einsehbaren Zusatzlotterie "Spiel 77" vom Samstag den 05. August 2023 übereinstimmen. Sollte es unter allen Teilnehmenden keinen Treffer geben, gewinnt die Losnummer, die numerisch am nächsten dran ist. <br><br> Die Teilnahme am Gewinnspiel ist kostenlos, freiwillig, unverbindlich und kann jederzeit widerrufen werden.
@@ -84,9 +84,13 @@
             <h2>Vielen Dank für Deine Teilnahme!</h2>
             <p class="lotteryInfo">Deine ausgewählte Losnummer lautet: <span id="lotteryNumber"></span></p>
             <p class="lotteryInfo">Dein einmaliger Teilnahme-Code lautet: <span id="participationCode"></span></p>
+            <p class="lotteryInfo">Bitte trage nun hier die Emailadresse ein, mit der du beinem möglichen Gewinn kontaktiert werden möchtest.></span></p>
             <form onsubmit="handleEmailSubmission(); return false;">
                 <input type="email" id="emailInput" name="emailInput" required placeholder="Deine E-Mail Adresse" />
                 <button type="submit">Absenden</button>
+                 <p class="legalNotes">
+                     Die Angabe deiner Email-Adresse dient lediglich zur Benachrichtigung im Falle Deines Gewinns. Darüber hinaus wird keine Kontaktaufnahme stattfinden.<br><br> Die Teilnahme am Gewinnspiel ist freiwillig. Du kannst das Browserfenster selbstverständlich auch schließen, ohne am Gewinnspiel teilzunehmen.<br><br> Bei Fragen zum Gewinnspiel oder den Umgang mit deinen Daten melde dich bitte hier: hier: pg96ipot@studserv.uni-leipzig.de
+                 </p>      
             </form>
         </div>
         <div id="thankyouMessage" style="display: none;">
