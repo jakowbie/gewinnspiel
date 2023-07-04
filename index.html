@@ -24,7 +24,7 @@
             border-radius: 10px;
             box-shadow: 0px 0px 20px rgba(0,0,0,0.1);
         }
-        #welcomeMessage, #emailForm, #thankyouMessage {
+        #welcomeMessage, #codeForm, #emailForm, #thankyouMessage {
             display: none;
         }
         .legalNotes {
@@ -38,7 +38,7 @@
         .bold {
             font-size: 1.2em;
         }
-        input[type="email"], input[type="number"], button[type="submit"] {
+        input[type="email"], button[type="submit"] {
             width: 100%;
             padding: 10px;
             margin-bottom: 10px;
@@ -69,31 +69,32 @@
         <div id="welcomeMessage">
             <h1>Willkommen beim Gewinnspiel!</h1>
         </div>
-        <form id="codeForm" onsubmit="handleCodeSubmission(); return false;">
-            <p>Bitte trage hier eine vierstellige Zahl zwischen 0000 und 9999 ein:</p>
-            <input type="number" id="codeInput" name="codeInput" min="0" max="9999" required />
-            <button type="submit">Weiter</button>
-            <p class="legalNotes">
-                Du gewinnst, wenn deine Nummer mit den ersten vier Ziffern der öffentlich einsehbaren Zusatzlotterie "Spiel 77" vom Samstag den 05. August 2023 übereinstimmen. Sollte es unter allen Teilnehmenden keinen Treffer geben, gewinnt die Losnummer, die numerisch am nächsten dran ist.<br><br> Die Teilnahme am Gewinnspiel ist kostenlos, freiwillig, unverbindlich und kann jederzeit widerrufen werden.
-            </p>
-        </form>
-        <div id="emailForm" style="display: none;">
-            <form onsubmit="handleEmailSubmission(); return false;">
-                <input type="hidden" id="code" name="code" />
-                <input type="hidden" id="num" name="num" />
-                <p>Bitte trage hier die Email-Adresse ein, mit der du bei einem möglichen Gewinn kontaktiert werden möchtest:<br><br></p>
-                <input type="email" id="email" name="_replyto" required placeholder="Deine E-Mail Adresse" />
-                <button type="submit">Teilnehmen</button>
+        <div id="codeForm">
+            <h2>Code eingeben</h2>
+            <form onsubmit="handleCodeSubmission(); return false;">
+                <p>Bitte trage hier eine vierstellige Zahl zwischen 0000 und 9999 ein:</p>
+                <input type="number" id="codeInput" name="codeInput" min="0" max="9999" required placeholder="Dein Code" />
+                <button type="submit">Weiter</button>
                 <p class="legalNotes">
-                    Die Angabe deiner Email-Adresse dient lediglich zur Benachrichtigung im Falle deines Gewinns. Darüber hinaus wird keine Kontaktaufnahme stattfinden. Deine Daten werden nicht an Dritte weitergegeben.<br><br> Die Teilnahme am Gewinnspiel ist freiwillig, unverbindlich und kann jederzeit widerrufen werden.
+                    Du gewinnst, wenn deine Nummer mit den ersten vier Ziffern der öffentlich einsehbaren Zusatzlotterie "Spiel 77" vom Samstag den 05. August 2023 übereinstimmen. Sollte es unter allen Teilnehmenden keinen Treffer geben, gewinnt die Losnummer, die numerisch am nächsten dran ist. <br><br> Die Teilnahme am Gewinnspiel ist kostenlos, freiwillig, unverbindlich und kann jederzeit widerrufen werden.
                 </p>
             </form>
         </div>
+        <div id="emailForm" style="display: none;">
+            <h2>Vielen Dank für Deine Teilnahme!</h2>
+            <p class="lotteryInfo">Deine ausgewählte Losnummer lautet: <span id="lotteryNumber"></span></p>
+            <p class="lotteryInfo">Dein einmaliger Teilnahme-Code lautet: <span id="participationCode"></span></p>
+            <form onsubmit="handleEmailSubmission(); return false;">
+                <input type="email" id="emailInput" name="emailInput" required placeholder="Deine E-Mail Adresse" />
+                <button type="submit">Absenden</button>
+            </form>
+        </div>
         <div id="thankyouMessage" style="display: none;">
-            <h1>Vielen Dank für deine Teilnahme!</h1>
-            <p class="lotteryInfo" id="lotteryNumberText"></p>
+            <h2>Vielen Dank für Deine Teilnahme!</h2>
+            <p>Das Formular wurde erfolgreich übermittelt.</p>
         </div>
     </div>
+
     <script>
         function generateRandomCode(length) {
             var result = '';
@@ -104,7 +105,6 @@
             }
             return result;
         }
-
         function generateRandomNum(length) {
             var result = '';
             var numbers = '0123456789';
@@ -116,41 +116,59 @@
         }
 
         function handleCodeSubmission() {
-            var code = document.getElementById('codeInput').value;
-            if (code.length !== 4) {
-                alert('Bitte gib eine vierstellige Zahl ein.');
+            var codeInput = document.getElementById('codeInput').value;
+            var code = parseInt(codeInput);
+            if (isNaN(code) || code < 0 || code > 9999) {
+                alert("Bitte gib eine gültige vierstellige Zahl zwischen 0000 und 9999 ein.");
                 return;
             }
+            var num = generateRandomNum(4);
+            var participationCode = generateRandomCode(10);
 
-            document.getElementById('code').value = code;
-            document.getElementById('num').value = generateRandomNum(3);
+            document.getElementById('lotteryNumber').innerText = num;
+            document.getElementById('participationCode').innerText = participationCode;
 
-            document.getElementById('codeForm').style.display = 'none';
-            document.getElementById('emailForm').style.display = 'block';
+            document.getElementById('codeForm').style.display = "none";
+            document.getElementById('emailForm').style.display = "block";
         }
 
         function handleEmailSubmission() {
-            var email = document.getElementById('email').value;
-            if (!emailIsValid(email)) {
-                alert('Bitte gib eine gültige E-Mail-Adresse ein.');
-                return;
-            }
+            var email = document.getElementById('emailInput').value;
+            var lotteryNumber = document.getElementById('lotteryNumber').innerText;
+            var participationCode = document.getElementById('participationCode').innerText;
 
-            document.getElementById('emailForm').style.display = 'none';
-            document.getElementById('thankyouMessage').style.display = 'block';
+            // Validierungen für Email-Adresse können hier durchgeführt werden
 
-            // Formular an Formspree senden
-            document.getElementById('emailForm').submit();
+            var formData = new FormData();
+            formData.append('email', email);
+            formData.append('lotteryNumber', lotteryNumber);
+            formData.append('participationCode', participationCode);
+
+            fetch('https://formspree.io/f/mdornqzl', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+                .then(function (response) {
+                    if (response.ok) {
+                        document.getElementById('emailForm').style.display = "none";
+                        document.getElementById('thankyouMessage').style.display = "block";
+                    } else {
+                        alert("Ein Fehler ist aufgetreten. Bitte versuche es später erneut.");
+                    }
+                })
+                .catch(function (error) {
+                    alert("Ein Fehler ist aufgetreten. Bitte versuche es später erneut.");
+                    console.error(error);
+                });
         }
 
-        function emailIsValid(email) {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        }
-
-        // Zeige die Willkommensnachricht und das Eingabeformular, wenn das Dokument geladen ist
+        // Zeige die Willkommensnachricht und das Formular, wenn das Dokument geladen ist
         document.addEventListener('DOMContentLoaded', (event) => {
-            document.getElementById('welcomeMessage').style.display = 'block';
-            document.getElementById('codeForm').style.display = 'block';
+            document.getElementById('welcomeMessage').style.display = "block";
+            document.getElementById('codeForm').style.display = "block";
         });
     </script>
 </body>
