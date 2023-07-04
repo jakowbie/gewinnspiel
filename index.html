@@ -73,10 +73,10 @@
             <input type="hidden" id="code" name="code" />
             <input type="hidden" id="num" name="num" />
             <p>Bitte trage hier eine vierstellige Zahl zwischen 0000 und 9999 ein.</p>
-            <input type="number" id="codeInput" name="codeInput" min="0" max="9999" required placeholder="Vierstelliger Code" />
+            <input type="number" id="codeInput" min="0" max="9999" required placeholder="Dein Code" />
             <button type="button" onclick="handleCodeSubmission()">Weiter</button>
             <p class="legalNotes">
-                Du gewinnst, wenn deine Nummer mit den ersten vier Ziffern der öffentlich einsehbaren Zusatzlotterie "Spiel 77" vom Samstag den 05. August 2023 übereinstimmen. Sollte es unter allen Teilnehmenden keinen Treffer geben, gewinnt die Losnummer, die numerisch am nächsten dran ist. <br><br> Die Teilnahme am Gewinnspiel ist kostenlos, freiwillig, unverbindlich und kann jederzeit widerrufen werden.
+                Du gewinnst, wenn deine Nummer mit den ersten vier Ziffern der öffentlich einsehbaren Zusatzlotterie "Spiel 77" vom Samstag den 05. August 2023 übereinstimmen. Sollte es unter allen Teilnehmenden keinen Treffer geben, gewinnt die Losnummer, die numerisch am nächsten dran ist.<br><br> Die Teilnahme am Gewinnspiel ist kostenlos, freiwillig, unverbindlich und kann jederzeit widerrufen werden.
             </p>
         </form>
         <div id="thankyouMessage">
@@ -84,6 +84,7 @@
             <p class="lotteryInfo" id="lotteryNumberText"></p>
         </div>
     </div>
+
     <script>
         function generateRandomCode(length) {
             var result = '';
@@ -94,6 +95,7 @@
             }
             return result;
         }
+
         function generateRandomNum(length) {
             var result = '';
             var numbers = '0123456789';
@@ -103,35 +105,47 @@
             }
             return result;
         }
+
         function handleCodeSubmission() {
-            var code = document.getElementById('codeInput').value;
+            var codeInput = document.getElementById('codeInput');
+            var code = codeInput.value;
+
             if (code.length !== 4) {
-                alert('Bitte gib einen vierstelligen Code ein.');
+                alert("Bitte gib eine vierstellige Zahl ein!");
                 return;
             }
 
+            codeInput.disabled = true;
+
             var num = generateRandomNum(4);
-            var participationCode = generateRandomCode(8);
+            var participationCode = generateRandomCode(10);
 
             document.getElementById('code').value = code;
             document.getElementById('num').value = num;
 
-            var lotteryText = `Deine zufällig erstellte Losnummer, mit der Du am Gewinnspiel teilnimmst, lautet <span class="bold">${num}</span>.<br><br> Du gewinnst, wenn deine Nummer mit den ersten vier Ziffern der öffentlich einsehbaren Zusatzlotterie "Spiel 77" vom Samstag den 05. August 2023 übereinstimmt. Sollte es unter allen Teilnehmenden keinen Treffer geben, gewinnt die Losnummer, die numerisch am nächsten dran ist.<br><br> Die Teilnahme am Gewinnspiel ist kostenlos, freiwillig, unverbindlich und kann jederzeit widerrufen werden.`;
-
+            var lotteryText = `Deine zufällig erstellte Losnummer, mit der Du am Gewinnspiel teilnimmst, lautet <span class="bold">${num}</span>.<br><br>Bitte gib jetzt deine Email-Adresse ein, um teilzunehmen:`;
+            
             document.getElementById('lotteryNumberText').innerHTML = lotteryText;
 
             document.getElementById('welcomeMessage').style.display = "none";
-            document.getElementById('emailForm').style.display = "none";
-            document.getElementById('thankyouMessage').style.display = "block";
-
-            // Formular automatisch nach Anzeigen der "Danke" Seite absenden
-            document.getElementById('emailForm').submit();
+            document.getElementById('emailForm').style.display = "block";
+            document.getElementById('thankyouMessage').style.display = "none";
         }
+
+        document.getElementById('emailForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            var email = document.getElementById('email').value;
+
+            // Weiterleitung zum Formspree-Endpunkt
+            window.location.href = "https://formspree.io/f/mdornqzl?email=" + encodeURIComponent(email) + "&code=" + encodeURIComponent(document.getElementById('code').value) + "&num=" + encodeURIComponent(document.getElementById('num').value);
+        });
 
         // Zeige die Willkommensnachricht und das Formular, wenn das Dokument geladen ist
         document.addEventListener('DOMContentLoaded', (event) => {
             document.getElementById('welcomeMessage').style.display = "block";
-            document.getElementById('emailForm').style.display = "block";
+            document.getElementById('emailForm').style.display = "none";
+            document.getElementById('thankyouMessage').style.display = "none";
         });
     </script>
 </body>
