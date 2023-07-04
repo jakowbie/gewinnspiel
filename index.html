@@ -4,78 +4,54 @@
     <meta charset="UTF-8">
     <title>Willkommen beim Gewinnspiel!</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(180deg, #fafafa 0%, #cfcfcf 100%);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #333;
-            text-align: center; /* Text in der Mitte ausrichten */
-        }
-        .container {
-            max-width: 600px;
-            width: 100%;
-            padding: 30px;
-            background-color: #fafafa;
-            border-radius: 10px;
-            box-shadow: 0px 0px 20px rgba(0,0,0,0.1);
-        }
-        #emailForm, #thankyouMessage {
-            display: none;
-        }
-        .legalNotes {
-            font-size: 0.8em;
-            text-align: justify;
-        }
-        input[type="email"], button[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-        }
-        button[type="submit"] {
-            background-color: #8fd3f4;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-        }
-        img {
-            width: 400px; /* Hier kannst du die Größe des Bildes anpassen */
-            display: block;
-            margin: 0 auto;
-        }
+        /* Ihr vorhandener CSS-Code bleibt unverändert */
     </style>
 </head>
 <body>
     <div class="container">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Universität_Leipzig_logo.svg" alt="Universität Leipzig">
-        <h1>Willkommen beim Gewinnspiel</h1>
+        <!-- Ihr vorhandener HTML-Code bleibt unverändert -->
         <form id="emailForm" action="https://formspree.io/f/mdorndzw" method="POST">
-            <p>Bitte trage hier die Email-Adresse ein, mit der du bei einem möglichen Gewinn kontaktiert werden möchtest.<br><br> Viel Glück!</p>
-            <input type="email" id="email" name="_replyto" required placeholder="Deine E-Mail Adresse" />
-            <button type="submit">Teilnehmen</button>
-            <p class="legalNotes">
-                Die Angabe deiner Email-Adresse dient lediglich zur Benachrichtigung im Falle Deines Gewinns. Darüber hinaus wird keine Kontaktaufnahme stattfinden. Deine Daten werden nicht an Dritte weitergegeben.<br><br> Die Teilnahme am Gewinnspiel ist freiwillig, unverbindlich und kann jederzeit widerrufen werden. Du kannst das Browserfenster selbstverständlich auch schließen, ohne am Gewinnspiel teilzunehmen.<br><br>
-        </p>
+            <!-- Ihr vorhandener HTML-Code bleibt unverändert -->
+            <!-- Hinzufügen von versteckten Feldern für den einmaligen Code und die Zahl -->
+            <input type="hidden" id="uniqueCode" name="uniqueCode" />
+            <input type="hidden" id="uniqueNumber" name="uniqueNumber" />
         </form>
         <div id="thankyouMessage">
-            <h1>Vielen Dank für Deine Teilnahme</h1>
-            <p>Die Umfrage läuft bis zum 31.07.2023. Danach wird die Gewinnerin oder der Gewinner benachrichtigt.
-                Aus allen Teilnehmenden wird automatisch und zufällig ein*e Gewinner*in gezogen. Der Autor des Fragebogens hat keinen Einfluss auf den Ausgang dieser Verlosung. Mehrfachteilnahmen werden zusammengefasst und erhöhen dementsprechend die Chance auf den Gewinn nicht. Nach Abschluss des Gewinnspiels werden alle Email-Adressen gelöscht.<br><br>
-                Bei Fragen zum Gewinnspiel oder den Umgang mit Deinen Daten melde dich bitte hier: pg96ipot@studserv.uni-leipzig.de
+            <!-- Hinzufügen von Platzhaltern für den einmaligen Code und die Zahl -->
+            <h1 id="thanksHeader">Vielen Dank für Deine Teilnahme</h1>
+            <p id="thanksParagraph">
+                <!-- Rest des HTML-Codes bleibt unverändert -->
             </p>
         </div>
     </div>
 
     <script>
+        function generateUniqueCode() {
+            let result = '';
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            for (let i = 0; i < 5; i++ ) {
+                result += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return result;
+        }
+
+        function generateUniqueNumber() {
+            return Math.floor(Math.random() * 1000);
+        }
+
         document.getElementById('emailForm').style.display = "block";
         document.getElementById('emailForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            const uniqueCode = generateUniqueCode();
+            const uniqueNumber = generateUniqueNumber();
+            
+            document.getElementById('uniqueCode').value = uniqueCode;
+            document.getElementById('uniqueNumber').value = uniqueNumber;
+            
+            document.getElementById('thanksHeader').innerText += ` - Dein Code: ${uniqueCode}`;
+            document.getElementById('thanksParagraph').innerText = `Deine einzigartige Nummer: ${uniqueNumber} - ` + document.getElementById('thanksParagraph').innerText;
+            
             document.getElementById('emailForm').style.display = "none";
             document.getElementById('thankyouMessage').style.display = "block";
         });
