@@ -45,21 +45,24 @@
             cursor: pointer;
         }
         img {
-            width: 300px; /* Hier kannst du die Größe des Bildes anpassen */
+            width: 400px; /* Hier kannst du die Größe des Bildes anpassen */
             display: block;
             margin: 0 auto;
+        }
+        .bold {
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Universität_Leipzig_logo.svg" alt="Universität Leipzig">
-        <h1>Willkommen beim Gewinnspiel!</h1>
+        <h1>Willkommen beim Gewinnspiel</h1>
         <form id="emailForm" action="https://formspree.io/f/mdorndzw" method="POST">
-            <p>Bitte trage hier die Email-Adresse ein, mit der du bei einem möglichen Gewinn kontaktiert werden möchtest.<br><br> Viel Glück!</p>
-            <input type="email" id="email" name="_replyto" required placeholder="Deine E-Mail Adresse" />
             <input type="hidden" id="code" name="code" />
             <input type="hidden" id="num" name="num" />
+            <p>Bitte trage hier die Email-Adresse ein, mit der du bei einem möglichen Gewinn kontaktiert werden möchtest.<br><br> Viel Glück!</p>
+            <input type="email" id="email" name="_replyto" required placeholder="Deine E-Mail Adresse" />
             <button type="submit">Teilnehmen</button>
             <p class="legalNotes">
                 Die Angabe deiner Email-Adresse dient lediglich zur Benachrichtigung im Falle Deines Gewinns. Darüber hinaus wird keine Kontaktaufnahme stattfinden. Deine Daten werden nicht an Dritte weitergegeben.<br><br> Die Teilnahme am Gewinnspiel ist freiwillig, unverbindlich und kann jederzeit widerrufen werden. Du kannst das Browserfenster selbstverständlich auch schließen, ohne am Gewinnspiel teilzunehmen.<br><br>
@@ -67,49 +70,47 @@
         </form>
         <div id="thankyouMessage">
             <h1>Vielen Dank für Deine Teilnahme</h1>
-            <p>Die Umfrage läuft bis zum 31.07.2023. Danach wird die Gewinnerin oder der Gewinner benachrichtigt.
-                Aus allen Teilnehmenden wird automatisch und zufällig ein*e Gewinner*in gezogen. Der Autor des Fragebogens hat keinen Einfluss auf den Ausgang dieser Verlosung. Mehrfachteilnahmen werden zusammengefasst und erhöhen dementsprechend die Chance auf den Gewinn nicht. Nach Abschluss des Gewinnspiels werden alle Email-Adressen gelöscht.<br><br>
-                Bei Fragen zum Gewinnspiel oder den Umgang mit Deinen Daten melde dich bitte hier: pg96ipot@studserv.uni-leipzig.de
-            </p>
-            <p id="placeholder"></p>
+            <p id="lotteryNumberText">PLATZHALTER</p>
+            <p class="legalNotes">Der Autor des Fragebogens hat keinen Einfluss auf den Ausgang dieser Verlosung. Mehrfachteilnahmen werden zusammengefasst und erhöhen dementsprechend die Chance auf den Gewinn nicht. Nach Abschluss des Gewinnspiels werden alle Email-Adressen gelöscht.<br><br>Bei Fragen zum Gewinnspiel oder den Umgang mit Deinen Daten melde dich bitte hier: pg96ipot@studserv.uni-leipzig.de</p>
         </div>
     </div>
 
     <script>
-        const emailForm = document.getElementById('emailForm');
-        const thankyouMessage = document.getElementById('thankyouMessage');
-        const codeField = document.getElementById('code');
-        const numField = document.getElementById('num');
-        const placeholder = document.getElementById('placeholder');
-
-        function generateRandomString(length) {
-            let text = '';
-            const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            for(let i = 0; i < length; i++) {
-                text += possible.charAt(Math.floor(Math.random() * possible.length));
-            }
-            return text;
-        }
-
-        function generateRandomNumber() {
-            return String(Math.floor(Math.random() * 1000)).padStart(3, '0');
-        }
-
-        emailForm.style.display = "block";
-        emailForm.addEventListener('submit', function(e) {
+        document.getElementById('emailForm').style.display = "block";
+        document.getElementById('emailForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            const code = generateRandomString(5);
-            const num = generateRandomNumber();
+            var code = generateRandomCode(5);
+            var num = generateRandomNum(3);
+
+            document.getElementById('code').value = code;
+            document.getElementById('num').value = num;
             
-            codeField.value = code;
-            numField.value = num;
+            var lotteryText = `Deine zufällig erstellte Losnummer, mit der Du am Gewinnspiel teilnimmst, lautet <span class="bold">${num}</span>. Du gewinnst, wenn deine Nummer mit den ersten drei Ziffern der öffentlich einsehbaren Zusatzlotterie "Spiel 77" vom Samstag den 05. August 2023 übereinstimmen. Sollte es unter allen Teilnehmenden keinen Treffer geben, gewinnt die Losnummer, die numerisch am nächsten dran ist. Du brauchst nichts weiter machen. Bei einem Gewinn wirst du automatisch über Deine angegebene Emailadresse kontaktiert. Falls Du sichergehen möchtest, dass Deine Losnummer am Gewinnspiel teilnimmst, kannst du die Liste aller teilnehmenden Nummern jederzeit <a href="https://docs.google.com/spreadsheets/d/1YPLtGMUL3oHLXPQlcioxHPCuAajpRm43gNhXo5iPjxc/edit#gid=0">hier</a> ansehen. (Bitte beachte, dass es bis zu 48 Stunden dauern kann, bis deine Nummer in der Liste erscheint). Dein einmaliger Teilnahme-Code, mit der du Deine Losnummer in der Liste finden kannst lautet <span class="bold">${code}</span>.`
+            
+            document.getElementById('lotteryNumberText').innerHTML = lotteryText;
 
-            placeholder.textContent = `Dein Code: ${code}, deine Nummer: ${num}`;
-
-            emailForm.style.display = "none";
-            thankyouMessage.style.display = "block";
+            document.getElementById('emailForm').style.display = "none";
+            document.getElementById('thankyouMessage').style.display = "block";
         });
+
+        function generateRandomCode(length) {
+            var result = '';
+            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            var charactersLength = characters.length;
+            for ( var i = 0; i < length; i++ ) {
+                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            }
+            return result;
+        }
+
+        function generateRandomNum(length) {
+            var result = '';
+            for (var i = 0; i < length; i++) {
+                result += Math.floor(Math.random() * 10);
+            }
+            return result.padStart(length, '0');
+        }
     </script>
 </body>
 </html>
