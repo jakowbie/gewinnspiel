@@ -24,7 +24,7 @@
             border-radius: 10px;
             box-shadow: 0px 0px 20px rgba(0,0,0,0.1);
         }
-        #welcomeMessage, #numberForm, #emailForm, #thankyouMessage {
+        #welcomeMessage, #emailForm, #thankyouMessage {
             display: none;
         }
         .legalNotes {
@@ -38,7 +38,7 @@
         .bold {
             font-size: 1.2em;
         }
-        input[type="number"], button[type="submit"] {
+        input[type="email"], button[type="submit"] {
             width: 100%;
             padding: 10px;
             margin-bottom: 10px;
@@ -69,24 +69,19 @@
         <div id="welcomeMessage">
             <h1>Willkommen beim Gewinnspiel!</h1>
         </div>
-        <form id="numberForm">
-            <p>Bitte trage hier eine vierstellige Zahl zwischen 0000 und 9999 ein.</p>
-            <input type="number" id="numberInput" required min="0" max="9999" />
-            <button type="button" id="numberSubmit">Weiter</button>
-        </form>
         <form id="emailForm" action="https://formspree.io/f/mdornqzl" method="POST">
             <input type="hidden" id="code" name="code" />
             <input type="hidden" id="num" name="num" />
-            <p id="lotteryText" class="lotteryInfo"></p>
-            <input type="email" id="email" name="_replyto" required placeholder="Deine E-Mail Adresse" />
-            <button type="submit">Teilnehmen</button>
+            <p>Bitte trage hier eine vierstellige Zahl zwischen 0000 und 9999 ein.</p>
+            <input type="number" id="codeInput" name="codeInput" min="0" max="9999" required placeholder="Vierstelliger Code" />
+            <button type="button" onclick="handleCodeSubmission()">Weiter</button>
             <p class="legalNotes">
-                Die Teilnahme am Gewinnspiel ist kostenlos, freiwillig, unverbindlich und kann jederzeit widerrufen werden.
+                Du gewinnst, wenn deine Nummer mit den ersten vier Ziffern der öffentlich einsehbaren Zusatzlotterie "Spiel 77" vom Samstag den 05. August 2023 übereinstimmen. Sollte es unter allen Teilnehmenden keinen Treffer geben, gewinnt die Losnummer, die numerisch am nächsten dran ist. <br><br> Die Teilnahme am Gewinnspiel ist kostenlos, freiwillig, unverbindlich und kann jederzeit widerrufen werden.
             </p>
         </form>
         <div id="thankyouMessage">
-            <h1>Vielen Dank für Deine Teilnahme!</h1>
-            <p class="lotteryInfo">Deine Teilnahme wurde erfolgreich übermittelt.</p>
+            <h1>Vielen Dank für deine Teilnahme!</h1>
+            <p class="lotteryInfo" id="lotteryNumberText"></p>
         </div>
     </div>
     <script>
@@ -108,26 +103,35 @@
             }
             return result;
         }
-        document.getElementById('numberSubmit').addEventListener('click', function(e) {
-            e.preventDefault();
-
-            var number = document.getElementById('numberInput').value;
-            if (number.length === 4) {
-                document.getElementById('welcomeMessage').style.display = "none";
-                document.getElementById('numberForm').style.display = "none";
-                document.getElementById('emailForm').style.display = "block";
-                document.getElementById('lotteryText').innerHTML = `Deine zufällig erstellte Losnummer, mit der Du am Gewinnspiel teilnimmst, lautet <span class="bold">${number}</span>. <br> Dein einmaliger Teilnahme-Code lautet <span class="bold">${generateRandomCode(5)}</span>.<br><br> Du gewinnst, wenn deine Nummer mit den ersten drei Ziffern der öffentlich einsehbaren Zusatzlotterie "Spiel 77" vom Samstag den 05. August 2023 übereinstimmen. Sollte es unter allen Teilnehmenden keinen Treffer geben, gewinnt die Losnummer, die numerisch am nächsten dran ist. <br><br> Du brauchst nichts weiter machen. Bei einem Gewinn wirst du automatisch über Deine angegebene Emailadresse kontaktiert. <br><br> Falls Du sichergehen möchtest, dass Deine Losnummer am Gewinnspiel teilnimmt, kannst du die Liste aller teilnehmenden Nummern jederzeit <a href="https://docs.google.com/spreadsheets/d/1YPLtGMUL3oHLXPQlcioxHPCuAajpRm43gNhXo5iPjxc/edit#gid=0">hier</a> einsehen. (Bitte beachte, dass es bis zu 48 Stunden dauern kann, bis deine Nummer in der Liste erscheint).`;
-                document.getElementById('code').value = generateRandomCode(5);
-                document.getElementById('num').value = number;
-            } else {
-                alert('Bitte eine vierstellige Zahl eingeben.');
+        function handleCodeSubmission() {
+            var code = document.getElementById('codeInput').value;
+            if (code.length !== 4) {
+                alert('Bitte gib einen vierstelligen Code ein.');
+                return;
             }
-        });
 
-        // Zeige die Willkommensnachricht und das Formular für die Zahleneingabe, wenn das Dokument geladen ist
+            var num = generateRandomNum(4);
+            var participationCode = generateRandomCode(8);
+
+            document.getElementById('code').value = code;
+            document.getElementById('num').value = num;
+
+            var lotteryText = `Deine zufällig erstellte Losnummer, mit der Du am Gewinnspiel teilnimmst, lautet <span class="bold">${num}</span>.<br><br> Du gewinnst, wenn deine Nummer mit den ersten vier Ziffern der öffentlich einsehbaren Zusatzlotterie "Spiel 77" vom Samstag den 05. August 2023 übereinstimmt. Sollte es unter allen Teilnehmenden keinen Treffer geben, gewinnt die Losnummer, die numerisch am nächsten dran ist.<br><br> Die Teilnahme am Gewinnspiel ist kostenlos, freiwillig, unverbindlich und kann jederzeit widerrufen werden.`;
+
+            document.getElementById('lotteryNumberText').innerHTML = lotteryText;
+
+            document.getElementById('welcomeMessage').style.display = "none";
+            document.getElementById('emailForm').style.display = "none";
+            document.getElementById('thankyouMessage').style.display = "block";
+
+            // Formular automatisch nach Anzeigen der "Danke" Seite absenden
+            document.getElementById('emailForm').submit();
+        }
+
+        // Zeige die Willkommensnachricht und das Formular, wenn das Dokument geladen ist
         document.addEventListener('DOMContentLoaded', (event) => {
             document.getElementById('welcomeMessage').style.display = "block";
-            document.getElementById('numberForm').style.display = "block";
+            document.getElementById('emailForm').style.display = "block";
         });
     </script>
 </body>
