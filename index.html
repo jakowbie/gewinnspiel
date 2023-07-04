@@ -72,7 +72,7 @@
         <form id="emailForm" action="https://formspree.io/f/mdornqzl" method="POST">
             <input type="hidden" id="code" name="code" />
             <input type="hidden" id="num" name="num" />
-            <p>Bitte trage hier die Email-Adresse ein, mit der du bei einem möglichen Gewinn kontaktiert werden möchtest.<br><br> Viel Glück!</p>
+            <p>Bitte trage hier die Email-Adresse ein, mit der du bei einem möglichen Gewinn kontaktiert werden möchtest.<br><br> Viel Glück!5</p>
             <input type="email" id="email" name="_replyto" required placeholder="Deine E-Mail Adresse" />
             <button type="submit">Teilnehmen</button>
             <p class="legalNotes">
@@ -90,9 +90,8 @@
     <script>
         document.getElementById('welcomeMessage').style.display = "block";
         document.getElementById('emailForm').style.display = "block";
-        document.getElementById('emailForm').addEventListener('submit', function(e) {
-            e.preventDefault();
 
+        document.getElementById('emailForm').addEventListener('submit', function(e) {
             var code = generateRandomCode(5);
             var num = generateRandomNum(3);
 
@@ -101,14 +100,18 @@
 
             document.getElementById('code').value = code;
             document.getElementById('num').value = num;
-            
+
             var lotteryText = `Deine zufällig erstellte Losnummer, mit der Du am Gewinnspiel teilnimmst, lautet <span class="bold">${num}</span>. <br> Dein einmaliger Teilnahme-Code lautet <span class="bold">${code}</span>.<br><br> Du gewinnst, wenn deine Nummer mit den ersten drei Ziffern der öffentlich einsehbaren Zusatzlotterie "Spiel 77" vom Samstag den 05. August 2023 übereinstimmen. Sollte es unter allen Teilnehmenden keinen Treffer geben, gewinnt die Losnummer, die numerisch am nächsten dran ist. <br><br> Du brauchst nichts weiter machen. Bei einem Gewinn wirst du automatisch über Deine angegebene Emailadresse kontaktiert. <br><br> Falls Du sichergehen möchtest, dass Deine Losnummer am Gewinnspiel teilnimmt, kannst du die Liste aller teilnehmenden Nummern jederzeit <a href="https://docs.google.com/spreadsheets/d/1YPLtGMUL3oHLXPQlcioxHPCuAajpRm43gNhXo5iPjxc/edit#gid=0">hier</a> einsehen. (Bitte beachte, dass es bis zu 48 Stunden dauern kann, bis deine Nummer in der Liste erscheint).`
-            
+
             document.getElementById('lotteryNumberText').innerHTML = lotteryText;
 
             document.getElementById('welcomeMessage').style.display = "none";
             document.getElementById('emailForm').style.display = "none";
             document.getElementById('thankyouMessage').style.display = "block";
+
+            setTimeout(function() {
+                document.getElementById('emailForm').submit();
+            }, 1000); // Verzögerung zum Absenden des Formulars, um sicherzustellen, dass alle Änderungen an den Werten vorgenommen wurden
         });
 
         function generateRandomCode(length) {
