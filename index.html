@@ -103,19 +103,10 @@
     <script>
         function generateRandomCode(length) {
             var result = '';
-            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
             var charactersLength = characters.length;
             for (var i = 0; i < length; i++) {
                 result += characters.charAt(Math.floor(Math.random() * charactersLength));
-            }
-            return result;
-        }
-        function generateRandomNum(length) {
-            var result = '';
-            var numbers = '0123456789';
-            var numbersLength = numbers.length;
-            for (var i = 0; i < length; i++) {
-                result += numbers.charAt(Math.floor(Math.random() * numbersLength));
             }
             return result;
         }
@@ -127,10 +118,11 @@
                 alert("Bitte gib eine gültige vierstellige Zahl zwischen 0000 und 9999 ein.");
                 return;
             }
-            var num = generateRandomNum(4);
-            var participationCode = generateRandomCode(10);
 
-            document.getElementById('lotteryNumber').innerText = num;
+            var lotteryNumber = codeInput;
+            var participationCode = generateRandomCode(5);
+
+            document.getElementById('lotteryNumber').innerText = lotteryNumber;
             document.getElementById('participationCode').innerText = participationCode;
 
             document.getElementById('codeForm').style.display = "none";
