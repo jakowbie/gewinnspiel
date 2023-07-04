@@ -38,7 +38,7 @@
         .bold {
             font-size: 1.2em;
         }
-        input[type="email"], button[type="submit"] {
+        input[type="email"], input[type="number"], button[type="submit"] {
             width: 100%;
             padding: 10px;
             margin-bottom: 10px;
@@ -69,28 +69,37 @@
         <div id="welcomeMessage">
             <h1>Willkommen beim Gewinnspiel!</h1>
         </div>
-        <form id="emailForm" action="https://formspree.io/f/mdornqzl" method="POST">
-            <input type="hidden" id="code" name="code" />
-            <input type="hidden" id="num" name="num" />
-            <p>Bitte trage hier eine vierstellige Zahl zwischen 0000 und 9999 ein.</p>
-            <input type="number" id="codeInput" min="0" max="9999" required placeholder="Dein Code" />
-            <button type="button" onclick="handleCodeSubmission()">Weiter</button>
+        <form id="codeForm" onsubmit="handleCodeSubmission(); return false;">
+            <p>Bitte trage hier eine vierstellige Zahl zwischen 0000 und 9999 ein:</p>
+            <input type="number" id="codeInput" name="codeInput" min="0" max="9999" required />
+            <button type="submit">Weiter</button>
             <p class="legalNotes">
                 Du gewinnst, wenn deine Nummer mit den ersten vier Ziffern der öffentlich einsehbaren Zusatzlotterie "Spiel 77" vom Samstag den 05. August 2023 übereinstimmen. Sollte es unter allen Teilnehmenden keinen Treffer geben, gewinnt die Losnummer, die numerisch am nächsten dran ist.<br><br> Die Teilnahme am Gewinnspiel ist kostenlos, freiwillig, unverbindlich und kann jederzeit widerrufen werden.
             </p>
         </form>
-        <div id="thankyouMessage">
+        <div id="emailForm" style="display: none;">
+            <form onsubmit="handleEmailSubmission(); return false;">
+                <input type="hidden" id="code" name="code" />
+                <input type="hidden" id="num" name="num" />
+                <p>Bitte trage hier die Email-Adresse ein, mit der du bei einem möglichen Gewinn kontaktiert werden möchtest:<br><br></p>
+                <input type="email" id="email" name="_replyto" required placeholder="Deine E-Mail Adresse" />
+                <button type="submit">Teilnehmen</button>
+                <p class="legalNotes">
+                    Die Angabe deiner Email-Adresse dient lediglich zur Benachrichtigung im Falle deines Gewinns. Darüber hinaus wird keine Kontaktaufnahme stattfinden. Deine Daten werden nicht an Dritte weitergegeben.<br><br> Die Teilnahme am Gewinnspiel ist freiwillig, unverbindlich und kann jederzeit widerrufen werden.
+                </p>
+            </form>
+        </div>
+        <div id="thankyouMessage" style="display: none;">
             <h1>Vielen Dank für deine Teilnahme!</h1>
             <p class="lotteryInfo" id="lotteryNumberText"></p>
         </div>
     </div>
-
     <script>
         function generateRandomCode(length) {
             var result = '';
             var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             var charactersLength = characters.length;
-            for ( var i = 0; i < length; i++ ) {
+            for (var i = 0; i < length; i++) {
                 result += characters.charAt(Math.floor(Math.random() * charactersLength));
             }
             return result;
@@ -100,52 +109,48 @@
             var result = '';
             var numbers = '0123456789';
             var numbersLength = numbers.length;
-            for ( var i = 0; i < length; i++ ) {
+            for (var i = 0; i < length; i++) {
                 result += numbers.charAt(Math.floor(Math.random() * numbersLength));
             }
             return result;
         }
 
         function handleCodeSubmission() {
-            var codeInput = document.getElementById('codeInput');
-            var code = codeInput.value;
-
+            var code = document.getElementById('codeInput').value;
             if (code.length !== 4) {
-                alert("Bitte gib eine vierstellige Zahl ein!");
+                alert('Bitte gib eine vierstellige Zahl ein.');
                 return;
             }
 
-            codeInput.disabled = true;
-
-            var num = generateRandomNum(4);
-            var participationCode = generateRandomCode(10);
-
             document.getElementById('code').value = code;
-            document.getElementById('num').value = num;
+            document.getElementById('num').value = generateRandomNum(3);
 
-            var lotteryText = `Deine zufällig erstellte Losnummer, mit der Du am Gewinnspiel teilnimmst, lautet <span class="bold">${num}</span>.<br><br>Bitte gib jetzt deine Email-Adresse ein, um teilzunehmen:`;
-            
-            document.getElementById('lotteryNumberText').innerHTML = lotteryText;
-
-            document.getElementById('welcomeMessage').style.display = "none";
-            document.getElementById('emailForm').style.display = "block";
-            document.getElementById('thankyouMessage').style.display = "none";
+            document.getElementById('codeForm').style.display = 'none';
+            document.getElementById('emailForm').style.display = 'block';
         }
 
-        document.getElementById('emailForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
+        function handleEmailSubmission() {
             var email = document.getElementById('email').value;
+            if (!emailIsValid(email)) {
+                alert('Bitte gib eine gültige E-Mail-Adresse ein.');
+                return;
+            }
 
-            // Weiterleitung zum Formspree-Endpunkt
-            window.location.href = "https://formspree.io/f/mdornqzl?email=" + encodeURIComponent(email) + "&code=" + encodeURIComponent(document.getElementById('code').value) + "&num=" + encodeURIComponent(document.getElementById('num').value);
-        });
+            document.getElementById('emailForm').style.display = 'none';
+            document.getElementById('thankyouMessage').style.display = 'block';
 
-        // Zeige die Willkommensnachricht und das Formular, wenn das Dokument geladen ist
+            // Formular an Formspree senden
+            document.getElementById('emailForm').submit();
+        }
+
+        function emailIsValid(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        // Zeige die Willkommensnachricht und das Eingabeformular, wenn das Dokument geladen ist
         document.addEventListener('DOMContentLoaded', (event) => {
-            document.getElementById('welcomeMessage').style.display = "block";
-            document.getElementById('emailForm').style.display = "none";
-            document.getElementById('thankyouMessage').style.display = "none";
+            document.getElementById('welcomeMessage').style.display = 'block';
+            document.getElementById('codeForm').style.display = 'block';
         });
     </script>
 </body>
