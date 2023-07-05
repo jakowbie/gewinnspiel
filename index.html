@@ -2,7 +2,6 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> </title>
     <style>
         body {
@@ -39,14 +38,6 @@
         .bold {
             font-size: 1.2em;
         }
-        input[type="number"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            font-size: 2em; 
-        }
         input[type="email"], button[type="submit"] {
             width: 100%;
             padding: 10px;
@@ -60,7 +51,6 @@
             color: #fff;
             border: none;
             cursor: pointer;
-            transition: background-color 0.3s ease;
         }
         img {
             width: 300px;
@@ -80,11 +70,11 @@
             <h1> </h1>
         </div>
         <div id="codeForm">
-            <h2>Willkommen beim Gewinnspiel!1</h2>
+            <h2>Willkommen beim Gewinnspiel!</h2>
             <form onsubmit="handleCodeSubmission(); return false;">
                 <p>Bitte trage hier eine vierstellige Zahl zwischen 0000 und 9999 ein:</p>
                 <input type="number" id="codeInput" name="codeInput" min="0" max="9999" required placeholder="Deine Losnummer" />
-                <button type="submit">Weiter</button>
+                <button type="submit">Teilnehmen</button>
                 <p class="legalNotes">
                     Du gewinnst, wenn deine Nummer mit den ersten vier Ziffern der öffentlich einsehbaren Zusatzlotterie "Spiel 77" vom Samstag den 05. August 2023 übereinstimmen. Sollte es unter allen Teilnehmenden keinen Treffer geben, gewinnt die Losnummer, die numerisch am nächsten dran ist. <br><br> Die Teilnahme am Gewinnspiel ist kostenlos, freiwillig, unverbindlich und kann jederzeit widerrufen werden.
                 </p>
@@ -122,30 +112,61 @@
         }
 
         function handleCodeSubmission() {
-            var codeInput = document.getElementById('codeInput');
-            var code = parseInt(codeInput.value);
+            var codeInput = document.getElementById('codeInput').value;
+            var code = parseInt(codeInput);
             if (isNaN(code) || code < 0 || code > 9999) {
                 alert("Bitte gib eine gültige vierstellige Zahl zwischen 0000 und 9999 ein.");
                 return;
             }
 
-            var lotteryNumber = codeInput.value;
+            var lotteryNumber = codeInput;
             var participationCode = generateRandomCode(5);
 
             document.getElementById('lotteryNumber').innerText = lotteryNumber;
             document.getElementById('participationCode').innerText = participationCode;
-            document.getElementById('codeForm').style.display = 'none';
-            document.getElementById('emailForm').style.display = 'block';
+
+            document.getElementById('codeForm').style.display = "none";
+            document.getElementById('emailForm').style.display = "block";
         }
 
         function handleEmailSubmission() {
-            document.getElementById('emailForm').style.display = 'none';
-            document.getElementById('thankyouMessage').style.display = 'block';
+            var email = document.getElementById('emailInput').value;
+            var lotteryNumber = document.getElementById('lotteryNumber').innerText;
+            var participationCode = document.getElementById('participationCode').innerText;
+
+            // Validierungen für Email-Adresse können hier durchgeführt werden
+
+            var formData = new FormData();
+            formData.append('email', email);
+            formData.append('lotteryNumber', lotteryNumber);
+            formData.append('participationCode', participationCode);
+
+            fetch('https://formspree.io/f/mdornqzl', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+                .then(function (response) {
+                    if (response.ok) {
+                        document.getElementById('emailForm').style.display = "none";
+                        document.getElementById('thankyouMessage').style.display = "block";
+                    } else {
+                        alert("Ein Fehler ist aufgetreten. Bitte versuche es später erneut.");
+                    }
+                })
+                .catch(function (error) {
+                    alert("Ein Fehler ist aufgetreten. Bitte versuche es später erneut.");
+                    console.error(error);
+                });
         }
 
-        window.onload = function () {
-            document.getElementById('codeForm').style.display = 'block';
-        }
+        // Zeige die Willkommensnachricht und das Formular, wenn das Dokument geladen ist
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.getElementById('welcomeMessage').style.display = "block";
+            document.getElementById('codeForm').style.display = "block";
+        });
     </script>
 </body>
 </html>
